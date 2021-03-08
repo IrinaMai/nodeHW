@@ -1,12 +1,10 @@
 const argv = require("yargs").argv;
 const {
-  contactsPath,
   listContacts,
   getContactById,
   removeContact,
   addContact,
 } = require("./contacts");
-// console.log(contactsPath);
 
 function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
@@ -15,7 +13,7 @@ function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case "get":
-      getContactById(contactId);
+      getContactById(id);
       break;
 
     case "add":
@@ -23,7 +21,7 @@ function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case "remove":
-      removeContact(contactId);
+      removeContact(id);
       break;
 
     default:
