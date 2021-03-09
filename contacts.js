@@ -6,9 +6,8 @@ const contactsPath = path.normalize("./db/contacts.json");
 
 async function listContacts() {
   try {
-    await fs.readFile(contactsPath).then((result) => {
-      console.table(JSON.parse(result.toString()));
-    });
+    const list = await fs.readFile(contactsPath);
+    console.table(JSON.parse(list.toString()));
   } catch (error) {
     console.log(error.message);
   }
@@ -16,10 +15,10 @@ async function listContacts() {
 
 async function getContactById(contactId) {
   try {
-    const list = await fs
-      .readFile(contactsPath)
-      .then((result) => JSON.parse(result.toString()));
-    console.table(list.find((item) => item.id === contactId));
+    const list = await fs.readFile(contactsPath);
+    console.table(
+      JSON.parse(list.toString()).find((item) => item.id === contactId)
+    );
   } catch (error) {
     console.log(error.message);
   }
@@ -27,9 +26,8 @@ async function getContactById(contactId) {
 
 async function removeContact(contactId) {
   try {
-    const list = await fs
-      .readFile(contactsPath)
-      .then((result) => JSON.parse(result.toString()));
+    const result = await fs.readFile(contactsPath);
+    const list = JSON.parse(result.toString());
     const corrList = list.filter((item) => item.id !== contactId);
     await fs.writeFile(contactsPath, JSON.stringify(corrList));
     console.table(corrList);
@@ -39,11 +37,10 @@ async function removeContact(contactId) {
 }
 
 async function addContact(name, email, phone) {
-  const newContact = { id: uniqid(), name, email, phone };
+  const newContact = { name, email, phone, id: uniqid() };
   try {
-    const list = await fs
-      .readFile(contactsPath)
-      .then((result) => JSON.parse(result.toString()));
+    const result = await fs.readFile(contactsPath);
+    const list = JSON.parse(result.toString());
     list.push(newContact);
 
     await fs.writeFile(contactsPath, JSON.stringify(list));
